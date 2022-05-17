@@ -1,0 +1,32 @@
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+a.deploy_info_link {
+    text-decoration: none;
+}
+
+div.deploy {
+    border: 0.1rem solid blue;
+    display: inline-block;
+    padding: 1rem;
+    line-height: 2rem;
+    color: black;
+}
+
+div.success {
+    background-color: aquamarine;
+}
+
+div.failure {
+    background-color: indianred;
+}
+
+div.inprogress {
+    background-color: aqua;
+}
+
+span.artifact {
+    font-size: 1.5rem;
+}
+

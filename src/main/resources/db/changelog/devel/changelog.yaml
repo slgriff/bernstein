@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: '1'
+      author: Sam Griff
+      changes:
+        - createTable:
+            tableName: environments
+            columns:
+              - column:
+                  name: name
+                  type: varchar(16)
+                  constraints:
+                    primaryKey: true
+        - createTable:
+            tableName: artifacts
+            columns:
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: version
+                  type: varchar(255)
+        - addPrimaryKey:
+            tableName: artifacts
+            columnNames: name, version
+        - createTable:
+            tableName: deployments
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: environment_name
+                  type: varchar(16)
+                  constraints:
+                    references: environments(id)
+              - column:
+                  name: artifact_name
+                  type: varchar(255)
+              - column:
+                  name: artifact_version
+                  type: varchar(255)
+        - addForeignKeyConstraint:
+            constraintName: fk_deployments_artifacts
+            baseTableName: deployments
+            baseColumnNames: artifact_name, artifact_version
+            referencedTableName: artifacts
+            referencedColumnNames: name, version
+        - createTable:
+            tableName: deployment_statuses
+            columns:
+              - column:
+                  name: deployment_id
+                  type: int
+              - column:
+                  name: status
+                  type: enum('success', 'failure', 'inprogress', 'aborted')
+        - addForeignKeyConstraint:
+            constraintName: fk_deployment_statuses_deployment
+            baseTableName: deployment_statuses
+            baseColumnNames: deployment_id
+            referencedTableName: deployments
+            referencedColumnNames: id
