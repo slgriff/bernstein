@@ -17,9 +17,13 @@ databaseChangeLog:
               - column:
                   name: name
                   type: varchar(255)
+                  constraints:
+                    nullable: false
               - column:
                   name: version
                   type: varchar(255)
+                  constraints:
+                    nullable: false
         - addPrimaryKey:
             tableName: artifacts
             columnNames: name, version
@@ -35,7 +39,8 @@ databaseChangeLog:
                   name: environment_name
                   type: varchar(16)
                   constraints:
-                    references: environments(id)
+                    foreignKeyName: fk_deployments_environments
+                    references: environments(name)
               - column:
                   name: artifact_name
                   type: varchar(255)

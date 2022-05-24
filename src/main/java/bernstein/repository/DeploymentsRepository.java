@@ -11,7 +11,7 @@ import java.util.Collection;
 
 @Repository
 @Slf4j
-public final class DeploymentsRepository {
+public class DeploymentsRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

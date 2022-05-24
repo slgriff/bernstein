@@ -7,13 +7,20 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 @JdbcTest
 public class DeploymentsRepositoryTest {
 
-    private final Artifact testArtifact1 = Artifact.builder().name("test-").version("0.0.1").build();
+    private static final String TEST_ARTIFACT_NAME1 = "test-artifact-for-deployment";
+
+    private static final String TEST_ARTIFACT_VERSION1 = "";
+    private static final String TEST_ARTIFACT_VERSION2 = "";
+    private static final String TEST_ARTIFACT_VERSION3 = "";
+
+    private final Artifact testArtifactv1 = Artifact.builder().name(TEST_ARTIFACT_NAME1).version(TEST_ARTIFACT_VERSION1).build();
+    private final Artifact testArtifactv2 = Artifact.builder().name(TEST_ARTIFACT_NAME1).version(TEST_ARTIFACT_VERSION2).build();
+    private final Artifact testArtifactv3 = Artifact.builder().name(TEST_ARTIFACT_NAME1).version(TEST_ARTIFACT_VERSION3).build();
 
     @Autowired
     private DeploymentsRepository deploymentsRepository;
 
     public void testA() {
-        //
     }
 
 

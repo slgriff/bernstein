@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public final class ArtifactsService {
+public class ArtifactsService {
 
     private final ArtifactsRepository artifactsRepository;
 

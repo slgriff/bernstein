@@ -1,20 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Deployments</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<span class="artifact">Artifact name</span> <br>
-<#list deployments as deploy>
-    <a href="#" class="deploy_info_link">
-        <div class="deploy ${environment.status}">
-            <span class="environment">${environment.name}</span> <br>
-            <span class="status">${environment.status}</span> <br>
-            <span class="version">${environment.version}</span> <br>
-        </div>
-    </a>
-</#list>
+    <span class="asdf">Environments Deploy List</span>
+    <table>
+        <#list environments as environment>
+            <tr>
+                <th>${environment.name}</th>
+            </tr>
+            <#list deployments as deployment>
+                <tr>
+                    <td>${deployment.name}</td>
+                    <td>${deployment.version}</td>
+                </tr>
+            </#list>
+        </#list>
+    </table>
 </body>
 </html>

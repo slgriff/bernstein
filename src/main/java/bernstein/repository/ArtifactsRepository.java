@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @Slf4j
-public final class ArtifactsRepository {
+public class ArtifactsRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

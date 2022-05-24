@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @Slf4j
-public final class EnvironmentsRepository {
+public class EnvironmentsRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

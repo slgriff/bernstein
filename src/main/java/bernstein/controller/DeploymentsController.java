@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @Slf4j
-public final class DeploymentsController {
+public class DeploymentsController {
 
     private final DeploymentsService deploymentsService;
 

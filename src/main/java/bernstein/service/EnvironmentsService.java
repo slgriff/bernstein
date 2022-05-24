@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public final class EnvironmentsService {
+public class EnvironmentsService {
 
     private final EnvironmentsRepository environmentsRepository;
 
