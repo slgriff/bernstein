@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Slf4j
@@ -16,15 +17,13 @@ public class DeploymentsController {
         this.deploymentsService = deploymentsService;
     }
 
-    @GetMapping("/deployments/{environment}/{artifact}")
-    public String getDeployments(@PathVariable(required = false) String environment, @PathVariable(required = false) String artifact) {
-        if (environment != null) {
-            if (artifact != null) {
-                return "";
-            } else {
-                return "";
-            }
-        }
-        return "";
+    @GetMapping("/deployments")
+    public String getDeployments(@RequestParam String environment, @RequestParam String artifact) {
+        return "deployments";
+    }
+
+    @GetMapping("/deployment")
+    public String getDeployment(@RequestParam Integer id) {
+        return "deployment";
     }
 }

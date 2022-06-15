@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Deployment {
-    private Integer id;
+public class User {
+    int id;
 }

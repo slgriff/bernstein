@@ -7,10 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
+import java.util.List;
 
 @Repository
 @Slf4j
+// TODO: replace asterisks in SQL with explicit column names
 public class DeploymentsRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -19,19 +20,19 @@ public class DeploymentsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private static final String GET_DEPLOYMENTS_BY_ENVIRONMENT_AND_ARTIFACT =
-            "SELECT * FROM DEPLOYMENTS d JOIN (SELECT * FROM ENVIRONMENTS WHERE name = ?) e"
+    private static final String GET_DEPLOYMENTS_BY_ENVIRONMENT_AND_ARTIFACT_SQL =
+            "SELECT id FROM deployments d JOIN (SELECT name FROM environments WHERE name = ?) e"
             + " ON d.environment_name = e.name"
-            + " JOIN (SELECT * FROM ARTIFACTS WHERE name = ?) a ON d.artifact_name = a.name";
+            + " JOIN (SELECT name FROM artifacts WHERE name = ?) a ON d.artifact_name = a.name";
 
 
-    public Collection<Deployment> getDeploymentsByEnvironmentAndArtifact(Environment environment, Artifact artifact) {
-        return jdbcTemplate.queryForList(GET_DEPLOYMENTS_BY_ENVIRONMENT_AND_ARTIFACT, Deployment.class, environment.getName(), artifact.getName());
+    public List<Deployment> getDeploymentsByEnvironmentAndArtifact(Environment environment, Artifact artifact) {
+        return jdbcTemplate.queryForList(GET_DEPLOYMENTS_BY_ENVIRONMENT_AND_ARTIFACT_SQL, Deployment.class, environment.getName(), artifact.getName());
     }
 
-    private static final String INSERT_DEPLOYMENT = "INSERT INTO DEPLOYMENTS(environment_name, artifact_name, artifact_version) VALUES(?, ?, ?)";
+    private static final String INSERT_DEPLOYMENT_SQL = "INSERT INTO deployments(environment_name, artifact_name, artifact_version) VALUES(?, ?, ?)";
 
     public void insertDeployment(Environment environment, Artifact artifact) {
-        jdbcTemplate.update(INSERT_DEPLOYMENT, environment.getName(), artifact.getName(), artifact.getVersion());
+        jdbcTemplate.update(INSERT_DEPLOYMENT_SQL, environment.getName(), artifact.getName(), artifact.getVersion());
     }
 }
