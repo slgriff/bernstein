@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pipeline {
-    List<Phase> phases;
+    private List<Phase> phases;
 
     public Pipeline() {
         phases = new ArrayList<>();

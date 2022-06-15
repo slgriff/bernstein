@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Phase {
-    List<Step> steps;
+    private List<Step> steps;
 
     public Phase() {
         steps = new ArrayList<>();

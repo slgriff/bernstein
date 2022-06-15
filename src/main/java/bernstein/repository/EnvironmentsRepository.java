@@ -18,7 +18,7 @@ public class EnvironmentsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private static String GET_ENVIRONMENTS_SQL = "SELECT name FROM environments";
+    private static final String GET_ENVIRONMENTS_SQL = "SELECT name FROM environments";
 
     public List<Environment> getEnvironments() {
         return jdbcTemplate.queryForList(GET_ENVIRONMENTS_SQL, Environment.class);

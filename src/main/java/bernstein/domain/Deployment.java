@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @Builder
 public class Deployment {
-    private Integer id;
+    private int id;
 }
