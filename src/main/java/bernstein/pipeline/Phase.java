@@ -10,6 +10,10 @@ public class Phase {
         steps = new ArrayList<>();
     }
 
+    public Phase(List<Step> steps) {
+        steps = new ArrayList<>(steps);
+    }
+
     public boolean addStep(Step step) {
         return steps.add(step);
     }

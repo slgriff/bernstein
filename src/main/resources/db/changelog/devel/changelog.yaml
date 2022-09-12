@@ -39,14 +39,24 @@ databaseChangeLog:
                   name: environment_name
                   type: varchar(16)
                   constraints:
+                    nullable: false
                     foreignKeyName: fk_deployments_environments
                     references: environments(name)
               - column:
                   name: artifact_name
                   type: varchar(255)
-              - column:
+                  constraints:
+                    nullable: false
+              - column:false
                   name: artifact_version
                   type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: script
+                  type: varchar
+                  constraints:
+                    nullable: false
         - addForeignKeyConstraint:
             constraintName: fk_deployments_artifacts
             baseTableName: deployments
@@ -59,6 +69,8 @@ databaseChangeLog:
               - column:
                   name: deployment_id
                   type: int
+                  constraints:
+                    nullable: false
               - column:
                   name: status
                   type: enum('success', 'failure', 'inprogress', 'aborted')
@@ -68,3 +80,21 @@ databaseChangeLog:
             baseColumnNames: deployment_id
             referencedTableName: deployments
             referencedColumnNames: id
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  type: varchar_ignorecase
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: password
+                  type: varchar_ignorecase
+                  constraints:
+                    nullable: false
+              - column:
+                  name: enabled
+                  type: boolean
+                  constraints:
+                    nullable: false

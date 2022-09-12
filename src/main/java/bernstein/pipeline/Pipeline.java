@@ -10,6 +10,10 @@ public class Pipeline {
         phases = new ArrayList<>();
     }
 
+    public Pipeline(List<Phase> phases) {
+        phases = new ArrayList<>(phases);
+    }
+
     public boolean addPhase(Phase phase) {
         return phases.add(phase);
     }
