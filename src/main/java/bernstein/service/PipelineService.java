@@ -3,7 +3,6 @@ package bernstein.service;
 import bernstein.pipeline.Phase;
 import bernstein.pipeline.Pipeline;
 import bernstein.pipeline.step.EchoStep;
-import bernstein.pipeline.step.NoopStep;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

@@ -47,7 +47,7 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
-              - column:false
+              - column:
                   name: artifact_version
                   type: varchar(255)
                   constraints:
