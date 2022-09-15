@@ -181,3 +181,6 @@ README.html
 
 ### Local Properties Configuration ###
 .env
+
+### HotSwapAgent ###
+hotswap-agent.properties

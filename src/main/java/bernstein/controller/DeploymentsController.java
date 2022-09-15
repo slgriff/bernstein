@@ -17,7 +17,7 @@ public class DeploymentsController {
     }
 
     @GetMapping("/deployments")
-    public String getDeployments(@RequestParam String environment, @RequestParam String artifact) {
+    public String getDeployments(@RequestParam(required = false) String environment, @RequestParam(required = false) String artifact) {
         return "deployments";
     }
 

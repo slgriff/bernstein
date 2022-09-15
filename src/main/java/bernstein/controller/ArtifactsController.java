@@ -18,12 +18,12 @@ public class ArtifactsController {
     }
 
     @GetMapping("/artifacts")
-    public String getArtifacts(@RequestParam String environment) {
+    public String getArtifacts(@RequestParam(required = false) String environment) {
         return "artifacts";
     }
 
     @GetMapping("/artifact/{artifact}")
-    public String getArtifact(@PathVariable String artifact, @RequestParam String environment) {
+    public String getArtifact(@PathVariable String artifact, @RequestParam(required = false) String environment) {
         return "artifact";
     }
 }
