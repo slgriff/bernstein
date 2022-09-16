@@ -181,6 +181,12 @@ README.html
 
 ### Local Properties Configuration ###
 .env
+application.yaml
+application.yml
+application.properties
+application-*.yaml
+application-*.yml
+application-*.properties
 
 ### HotSwapAgent ###
 hotswap-agent.properties
