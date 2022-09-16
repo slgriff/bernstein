@@ -5,7 +5,11 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-@Builder
 public class Environment {
     @NonNull private String name;
+
+    @Builder
+    public Environment(@NonNull String name) {
+        this.name = name;
+    }
 }

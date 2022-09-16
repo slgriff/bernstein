@@ -16,8 +16,6 @@ public class DeploymentsServiceTest {
     private DeploymentsService deploymentsService;
 
     @Test
-    public void test() {
-        deploymentsService.createDeploymentJob();
-    }
+    public void test() {}
 
 }

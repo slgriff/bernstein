@@ -23,6 +23,6 @@ public class EnvironmentsRepository {
 
     @Cacheable("environments")
     public List<Environment> getEnvironments() {
-        return jdbcTemplate.queryForList(GET_ENVIRONMENTS_SQL, Environment.class);
+        return jdbcTemplate.query(GET_ENVIRONMENTS_SQL, (rs, i) -> new Environment(rs.getString("name")));
     }
 }

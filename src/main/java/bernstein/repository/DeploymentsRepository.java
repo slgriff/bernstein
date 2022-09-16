@@ -28,7 +28,10 @@ public class DeploymentsRepository {
 
     @Cacheable("deployments")
     public List<Deployment> getDeploymentsByEnvironmentAndArtifact(Environment environment, Artifact artifact) {
-        return jdbcTemplate.query(GET_DEPLOYMENTS_BY_ENVIRONMENT_AND_ARTIFACT_SQL, (rs, i) -> new Deployment(rs.getInt("id")), environment.getName(), artifact.getName());
+        return jdbcTemplate.query(GET_DEPLOYMENTS_BY_ENVIRONMENT_AND_ARTIFACT_SQL,
+                (rs, i) -> new Deployment(rs.getInt("id")),
+                environment.getName(),
+                artifact.getName());
     }
 
     private static final String GET_DEPLOYMENTS_BY_ENVIRONMENT_SQL =

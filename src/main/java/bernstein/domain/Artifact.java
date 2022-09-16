@@ -5,7 +5,11 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-@Builder
 public class Artifact {
     @NonNull private String name;
+
+    @Builder
+    public Artifact(@NonNull String name) {
+        this.name = name;
+    }
 }

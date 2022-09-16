@@ -21,7 +21,7 @@ public class ArtifactsRepository {
     private static final String GET_ARTIFACTS_SQL = "SELECT name FROM artifacts";
     @Cacheable("artifacts")
     public List<Artifact> getArtifacts() {
-        return jdbcTemplate.queryForList(GET_ARTIFACTS_SQL, Artifact.class);
+        return jdbcTemplate.query(GET_ARTIFACTS_SQL, (rs, i) -> new Artifact(rs.getString("name")));
     }
 
     private static final String INSERT_ARTIFACT_SQL = "INSERT INTO artifacts(name) VALUES(?)";
