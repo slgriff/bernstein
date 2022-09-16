@@ -7,4 +7,8 @@ import lombok.Data;
 @Builder
 public class Deployment {
     private int id;
+
+    public Deployment(int id) {
+        this.id = id;
+    }
 }

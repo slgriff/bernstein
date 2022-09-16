@@ -28,7 +28,7 @@ public class DeploymentsRepository {
 
     @Cacheable("deployments")
     public List<Deployment> getDeploymentsByEnvironmentAndArtifact(Environment environment, Artifact artifact) {
-        return jdbcTemplate.queryForList(GET_DEPLOYMENTS_BY_ENVIRONMENT_AND_ARTIFACT_SQL, Deployment.class, environment.getName(), artifact.getName());
+        return jdbcTemplate.query(GET_DEPLOYMENTS_BY_ENVIRONMENT_AND_ARTIFACT_SQL, (rs, i) -> new Deployment(rs.getInt("id")), environment.getName(), artifact.getName());
     }
 
     private static final String GET_DEPLOYMENTS_BY_ENVIRONMENT_SQL =
@@ -37,7 +37,7 @@ public class DeploymentsRepository {
 
     @Cacheable("deployments")
     public List<Deployment> getDeploymentsByEnvironment(Environment environment) {
-        return jdbcTemplate.queryForList(GET_DEPLOYMENTS_BY_ENVIRONMENT_SQL, Deployment.class, environment.getName());
+        return jdbcTemplate.query(GET_DEPLOYMENTS_BY_ENVIRONMENT_SQL, (rs, i) -> new Deployment(rs.getInt("id")), environment.getName());
     }
 
     private static final String GET_DEPLOYMENTS_BY_ARTIFACT_SQL =
@@ -46,7 +46,7 @@ public class DeploymentsRepository {
 
     @Cacheable("deployments")
     public List<Deployment> getDeploymentsByArtifact(Artifact artifact) {
-        return jdbcTemplate.queryForList(GET_DEPLOYMENTS_BY_ARTIFACT_SQL, Deployment.class, artifact.getName());
+        return jdbcTemplate.query(GET_DEPLOYMENTS_BY_ARTIFACT_SQL, (rs, i) -> new Deployment(rs.getInt("id")), artifact.getName());
     }
 
     private static final String INSERT_DEPLOYMENT_SQL = "INSERT INTO deployments(environment_name, artifact_name, artifact_version) VALUES(?, ?, ?)";

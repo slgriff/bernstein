@@ -38,8 +38,9 @@ public class DeploymentsRepositoryTest {
     @Test
     public void shouldWork1() {
         val deployments = deploymentsRepository.getDeploymentsByEnvironmentAndArtifact(environment1, artifact1);
-        assertThat(deployments).hasSize(1);
+        assertThat(deployments).isEmpty();
     }
+
     @Test
     public void shouldWork2() {
         jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment1.getName());
