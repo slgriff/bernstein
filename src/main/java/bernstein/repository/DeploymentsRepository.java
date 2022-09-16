@@ -4,6 +4,7 @@ import bernstein.domain.Artifact;
 import bernstein.domain.Environment;
 import bernstein.domain.Deployment;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +27,7 @@ public class DeploymentsRepository {
             + " JOIN (SELECT name FROM artifacts WHERE name = ?) a ON d.artifact_name = a.name";
 
 
+    @Cacheable("deployments")
     public List<Deployment> getDeploymentsByEnvironmentAndArtifact(Environment environment, Artifact artifact) {
         return jdbcTemplate.queryForList(GET_DEPLOYMENTS_BY_ENVIRONMENT_AND_ARTIFACT_SQL, Deployment.class, environment.getName(), artifact.getName());
     }
@@ -34,5 +36,14 @@ public class DeploymentsRepository {
 
     public void insertDeployment(Environment environment, Artifact artifact) {
         jdbcTemplate.update(INSERT_DEPLOYMENT_SQL, environment.getName(), artifact.getName(), artifact.getVersion());
+    }
+
+    private static final String GET_DEPLOYMENT_BY_ID_SQL = "SELECT e.name, a.name FROM deployments d"
+                                                           + " JOIN environments e ON d.environment_name = e.name"
+                                                           + " JOIN artifacts a ON d.artifact_name = a.name"
+                                                           + " WHERE d.id = ?";
+
+    public Deployment getDeploymentById(Integer id) {
+        return jdbcTemplate.queryForObject(GET_DEPLOYMENT_BY_ID_SQL, Deployment.class, id);
     }
 }

@@ -2,6 +2,7 @@ package bernstein.repository;
 
 import bernstein.domain.Environment;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,7 @@ public class EnvironmentsRepository {
 
     private static final String GET_ENVIRONMENTS_SQL = "SELECT name FROM environments";
 
+    @Cacheable("environments")
     public List<Environment> getEnvironments() {
         return jdbcTemplate.queryForList(GET_ENVIRONMENTS_SQL, Environment.class);
     }

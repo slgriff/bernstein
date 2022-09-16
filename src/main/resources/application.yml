@@ -1,4 +1,0 @@
-spring:
-  main:
-    banner-mode: off
-    log-startup-info: false
