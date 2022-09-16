@@ -1,6 +1,6 @@
 package bernstein.service;
 
-import bernstein.repository.ArtifactsRepository;
+import bernstein.repository.VersionedArtifactsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ArtifactsService {
 
-    private final ArtifactsRepository artifactsRepository;
+    private final VersionedArtifactsRepository versionedArtifactsRepository;
 
-    public ArtifactsService(ArtifactsRepository artifactsRepository) {
-        this.artifactsRepository = artifactsRepository;
+    public ArtifactsService(VersionedArtifactsRepository versionedArtifactsRepository) {
+        this.versionedArtifactsRepository = versionedArtifactsRepository;
     }
 }

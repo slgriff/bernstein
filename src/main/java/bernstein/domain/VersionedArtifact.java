@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Artifact {
+public class VersionedArtifact {
     private String name;
+    private String version;
 }

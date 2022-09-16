@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  type: varchar(16)
+                  type: varchar(31)
                   constraints:
                     primaryKey: true
         - createTable:
@@ -18,26 +18,37 @@ databaseChangeLog:
                   name: name
                   type: varchar(255)
                   constraints:
-                    nullable: false
+                    primaryKey: true
+        - createTable:
+            tableName: versioned_artifacts
+            columns:
               - column:
-                  name: version
+                  name: artifact_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_versioned_artifacts_artifacts
+                    references: artifacts(name)
+              - column:
+                  name: artifact_version
                   type: varchar(255)
                   constraints:
                     nullable: false
         - addPrimaryKey:
-            tableName: artifacts
-            columnNames: name, version
+            tableName: versioned_artifacts
+            columnNames: artifact_name, artifact_version
         - createTable:
             tableName: deployments
             columns:
               - column:
                   name: id
                   type: int
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
               - column:
                   name: environment_name
-                  type: varchar(16)
+                  type: varchar(31)
                   constraints:
                     nullable: false
                     foreignKeyName: fk_deployments_environments
@@ -52,17 +63,12 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
-              - column:
-                  name: script
-                  type: varchar
-                  constraints:
-                    nullable: false
         - addForeignKeyConstraint:
-            constraintName: fk_deployments_artifacts
+            constraintName: fk_deployments_versioned_artifacts
             baseTableName: deployments
             baseColumnNames: artifact_name, artifact_version
-            referencedTableName: artifacts
-            referencedColumnNames: name, version
+            referencedTableName: versioned_artifacts
+            referencedColumnNames: artifact_name, artifact_version
         - createTable:
             tableName: deployment_statuses
             columns:
