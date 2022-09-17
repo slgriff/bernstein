@@ -4,11 +4,9 @@ import bernstein.domain.Artifact;
 import bernstein.domain.Environment;
 import bernstein.domain.VersionedArtifact;
 import lombok.val;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cache.CacheManager;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,16 +34,6 @@ public class DeploymentsRepositoryTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private CacheManager cacheManager;
-
-    @AfterEach
-    public void tearDown() {
-        for (String cacheName : cacheManager.getCacheNames()) {
-            cacheManager.getCache(cacheName).clear();
-        }
-    }
 
     @Test
     public void shouldWork1() {
