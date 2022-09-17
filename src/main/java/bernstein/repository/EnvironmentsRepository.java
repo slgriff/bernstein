@@ -10,8 +10,8 @@ import java.util.List;
 
 @Repository
 @Slf4j
-// TODO: replace asterisks in SQL with explicit column names
 public class EnvironmentsRepository {
+    public static final String ENVIRONMENTS_CACHE_NAME = "environments";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -21,7 +21,7 @@ public class EnvironmentsRepository {
 
     private static final String GET_ENVIRONMENTS_SQL = "SELECT name FROM environments";
 
-    @Cacheable("environments")
+    @Cacheable(ENVIRONMENTS_CACHE_NAME)
     public List<Environment> getEnvironments() {
         return jdbcTemplate.query(GET_ENVIRONMENTS_SQL, (rs, i) -> new Environment(rs.getString("name")));
     }

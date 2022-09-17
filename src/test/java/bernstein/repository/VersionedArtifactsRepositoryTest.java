@@ -6,13 +6,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Transactional
 public class VersionedArtifactsRepositoryTest {
 
 
     @Autowired
-    private DeploymentsRepository deploymentsRepository;
+    private VersionedArtifactsRepository versionedArtifactsRepository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

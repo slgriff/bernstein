@@ -14,6 +14,7 @@ import java.util.List;
 @Repository
 @Slf4j
 public class DeploymentsRepository {
+    public static final String DEPLOYMENTS_CACHE_NAME = "deployments";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -26,7 +27,7 @@ public class DeploymentsRepository {
             + " WHERE d.environment_name = ? AND d.artifact_name = ?";
 
 
-    @Cacheable("deployments")
+    @Cacheable(DEPLOYMENTS_CACHE_NAME)
     public List<Deployment> getDeploymentsByEnvironmentAndArtifact(Environment environment, Artifact artifact) {
         return jdbcTemplate.query(GET_DEPLOYMENTS_BY_ENVIRONMENT_AND_ARTIFACT_SQL,
                 (rs, i) -> new Deployment(rs.getInt("id")),
@@ -38,7 +39,7 @@ public class DeploymentsRepository {
             "SELECT d.id FROM deployments d"
             + " WHERE d.environment_name = ?";
 
-    @Cacheable("deployments")
+    @Cacheable(DEPLOYMENTS_CACHE_NAME)
     public List<Deployment> getDeploymentsByEnvironment(Environment environment) {
         return jdbcTemplate.query(GET_DEPLOYMENTS_BY_ENVIRONMENT_SQL, (rs, i) -> new Deployment(rs.getInt("id")), environment.getName());
     }
@@ -47,9 +48,16 @@ public class DeploymentsRepository {
             "SELECT d.id FROM deployments d"
             + " WHERE d.artifact_name = ?";
 
-    @Cacheable("deployments")
+    @Cacheable(DEPLOYMENTS_CACHE_NAME)
     public List<Deployment> getDeploymentsByArtifact(Artifact artifact) {
         return jdbcTemplate.query(GET_DEPLOYMENTS_BY_ARTIFACT_SQL, (rs, i) -> new Deployment(rs.getInt("id")), artifact.getName());
+    }
+
+    private static final String GET_DEPLOYMENTS_SQL = "SELECT id FROM deployments";
+
+    @Cacheable(DEPLOYMENTS_CACHE_NAME)
+    public List<Deployment> getDeployments() {
+        return jdbcTemplate.query(GET_DEPLOYMENTS_BY_ARTIFACT_SQL, (rs, i) -> new Deployment(rs.getInt("id")));
     }
 
     private static final String INSERT_DEPLOYMENT_SQL = "INSERT INTO deployments(environment_name, artifact_name, artifact_version) VALUES(?, ?, ?)";

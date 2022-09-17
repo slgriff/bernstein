@@ -2,15 +2,17 @@ package bernstein.repository;
 
 import bernstein.domain.Artifact;
 import lombok.val;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.CacheManager;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Transactional
 public class ArtifactsRepositoryTest {
     private final Artifact artifact1 = Artifact.builder().name("TEST_ARTIFACT_NAME1").build();
@@ -23,6 +25,16 @@ public class ArtifactsRepositoryTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private CacheManager cacheManager;
+
+    @AfterEach
+    public void tearDown() {
+        for (String cacheName : cacheManager.getCacheNames()) {
+            cacheManager.getCache(cacheName).clear();
+        }
+    }
+
     @Test
     public void shouldWork1() {
         val artifacts = artifactsRepository.getArtifacts();
@@ -33,6 +45,7 @@ public class ArtifactsRepositoryTest {
     public void shouldWork2() {
         jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact1.getName());
         val artifacts = artifactsRepository.getArtifacts();
+
         assertThat(artifacts).hasSize(1);
     }
 
@@ -41,7 +54,8 @@ public class ArtifactsRepositoryTest {
         jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact1.getName());
         jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact2.getName());
         jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact3.getName());
+
         val artifacts = artifactsRepository.getArtifacts();
-        assertThat(artifacts).hasSize(4);
+        assertThat(artifacts).hasSize(3);
     }
 }
