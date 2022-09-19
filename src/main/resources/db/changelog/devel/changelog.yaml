@@ -34,6 +34,12 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with timezone
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
         - addPrimaryKey:
             tableName: versioned_artifacts
             columnNames: artifact_name, artifact_version
@@ -63,29 +69,26 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
+              - column:
+                  name: status
+                  type: enum('success', 'failure', 'inprogress', 'aborted')
+              - column:
+                  name: created_at
+                  type: timestamp with timezone
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: finished_at
+                  type: timestamp with timezone
+                  constraints:
+                    checkConstraint: finished_at >= created_at
         - addForeignKeyConstraint:
             constraintName: fk_deployments_versioned_artifacts
             baseTableName: deployments
             baseColumnNames: artifact_name, artifact_version
             referencedTableName: versioned_artifacts
             referencedColumnNames: artifact_name, artifact_version
-        - createTable:
-            tableName: deployment_statuses
-            columns:
-              - column:
-                  name: deployment_id
-                  type: int
-                  constraints:
-                    nullable: false
-              - column:
-                  name: status
-                  type: enum('success', 'failure', 'inprogress', 'aborted')
-        - addForeignKeyConstraint:
-            constraintName: fk_deployment_statuses_deployment
-            baseTableName: deployment_statuses
-            baseColumnNames: deployment_id
-            referencedTableName: deployments
-            referencedColumnNames: id
         - createTable:
             tableName: users
             columns:
@@ -102,5 +105,11 @@ databaseChangeLog:
               - column:
                   name: enabled
                   type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with timezone
+                  defaultValueComputed: CURRENT_TIMESTAMP
                   constraints:
                     nullable: false
