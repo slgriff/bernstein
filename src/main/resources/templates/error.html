@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Error</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
 </head>
 <body>
-
+    <span th:text="#{error.message}"></span>
 </body>
 </html>
