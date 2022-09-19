@@ -1,8 +1,9 @@
 package bernstein.controller;
 
-import bernstein.service.ArtifactsService;
+import bernstein.service.ApplicationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 public class ArtifactsController {
 
-    private final ArtifactsService artifactsService;
+    private final ApplicationService applicationService;
 
-    public ArtifactsController(ArtifactsService artifactsService) {
-        this.artifactsService = artifactsService;
+    public ArtifactsController(ApplicationService applicationService) {
+        this.applicationService = applicationService;
     }
 
     @GetMapping("/artifacts")
-    public String getArtifacts(@RequestParam(required = false) String environment) {
+    public String getArtifacts(@RequestParam(required = false) String environment, Model model) {
         return "artifacts";
     }
 

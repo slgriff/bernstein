@@ -1,8 +1,9 @@
-package bernstein.repository;
+package bernstein.repository.impl;
 
 import bernstein.domain.Artifact;
 import bernstein.domain.Environment;
 import bernstein.domain.VersionedArtifact;
+import bernstein.repository.ApplicationRepository;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Transactional
-public class DeploymentsRepositoryTest {
+public class ApplicationRepositoryImplTest {
     private final Artifact artifact1 = Artifact.builder().name("TEST_ARTIFACT_NAME1").build();
     private final Artifact artifact2 = Artifact.builder().name("TEST_ARTIFACT_NAME2").build();
     private final Artifact artifact3 = Artifact.builder().name("TEST_ARTIFACT_NAME3").build();
@@ -30,19 +31,43 @@ public class DeploymentsRepositoryTest {
     private final Environment environment4 = Environment.builder().name("TEST_ENVIRONMENT4_NAME").build();
 
     @Autowired
-    private DeploymentsRepository deploymentsRepository;
+    private ApplicationRepository applicationRepository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Test
     public void shouldWork1() {
-        val deployments = deploymentsRepository.getDeploymentsByEnvironmentAndArtifact(environment1, artifact1);
-        assertThat(deployments).isEmpty();
+        val artifacts = applicationRepository.getArtifacts();
+        assertThat(artifacts).isEmpty();
     }
 
     @Test
     public void shouldWork2() {
+        jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact1.getName());
+        val artifacts = applicationRepository.getArtifacts();
+
+        assertThat(artifacts).hasSize(1);
+    }
+
+    @Test
+    public void shouldWork3() {
+        jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact1.getName());
+        jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact2.getName());
+        jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact3.getName());
+
+        val artifacts = applicationRepository.getArtifacts();
+        assertThat(artifacts).hasSize(3);
+    }
+
+    @Test
+    public void shouldWork4() {
+        val deployments = applicationRepository.getDeploymentsByEnvironmentAndArtifact(environment1, artifact1);
+        assertThat(deployments).isEmpty();
+    }
+
+    @Test
+    public void shouldWork5() {
         jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment1.getName());
         jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact1.getName());
         jdbcTemplate.update("INSERT INTO versioned_artifacts(artifact_name, artifact_version) VALUES(?, ?)",
@@ -50,12 +75,12 @@ public class DeploymentsRepositoryTest {
         jdbcTemplate.update("INSERT INTO deployments(environment_name, artifact_name, artifact_version) VALUES(?, ?, ?)",
                 environment1.getName(), versionedArtifact1v1.getName(), versionedArtifact1v1.getVersion());
 
-        val deployments = deploymentsRepository.getDeploymentsByEnvironmentAndArtifact(environment1, artifact1);
+        val deployments = applicationRepository.getDeploymentsByEnvironmentAndArtifact(environment1, artifact1);
         assertThat(deployments).hasSize(1);
     }
 
     @Test
-    public void shouldWork3() {
+    public void shouldWork6() {
         jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment1.getName());
         jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment2.getName());
         jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment3.getName());
@@ -85,7 +110,32 @@ public class DeploymentsRepositoryTest {
         jdbcTemplate.update("INSERT INTO deployments(environment_name, artifact_name, artifact_version) VALUES(?, ?, ?)",
                 environment1.getName(), versionedArtifact3v1.getName(), versionedArtifact3v1.getVersion());
 
-        val deployments = deploymentsRepository.getDeploymentsByEnvironmentAndArtifact(environment1, artifact1);
+        val deployments = applicationRepository.getDeploymentsByEnvironmentAndArtifact(environment1, artifact1);
         assertThat(deployments).hasSize(3);
+    }
+
+    @Test
+    public void shouldWork7() {
+        val environments = applicationRepository.getEnvironments();
+        assertThat(environments).isEmpty();
+    }
+
+    @Test
+    public void shouldWork8() {
+        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment1.getName());
+
+        val environments = applicationRepository.getEnvironments();
+        assertThat(environments).hasSize(1);
+    }
+
+    @Test
+    public void shouldWork9() {
+        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment1.getName());
+        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment2.getName());
+        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment3.getName());
+        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment4.getName());
+
+        val environments = applicationRepository.getEnvironments();
+        assertThat(environments).hasSize(4);
     }
 }
