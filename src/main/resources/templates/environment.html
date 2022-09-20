@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Environments</title>
+    <title>Environment</title>
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
 </head>
 <body>
@@ -11,7 +11,7 @@
             <th>Name</th>
         </tr>
         <tr th:each="environment : ${environments}">
-            <td><a th:href="@{/environment/${environment.name}}" th:text="${environment.name}"></a> </td>
+            <td th:text="${environment.name}"></td>
         </tr>
 
     </table>

@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
-import java.time.OffsetDateTime;
+import java.sql.Timestamp;
 
 @Data
 public class User {
@@ -12,14 +12,14 @@ public class User {
     @NonNull private String username;
     @NonNull private String password;
     private boolean enabled;
-    @NonNull private OffsetDateTime createdAt;
+    @NonNull private Timestamp createdAt;
 
     @Builder
     public User(int id,
                 @NonNull String username,
                 @NonNull String password,
                 boolean enabled,
-                @NonNull OffsetDateTime createdAt) {
+                @NonNull Timestamp createdAt) {
         this.id = id;
         this.username = username;
         this.password = password;

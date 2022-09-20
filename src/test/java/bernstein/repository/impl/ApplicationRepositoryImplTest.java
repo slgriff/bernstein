@@ -11,6 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -20,10 +23,26 @@ public class ApplicationRepositoryImplTest {
     private final Artifact artifact2 = Artifact.builder().name("TEST_ARTIFACT_NAME2").build();
     private final Artifact artifact3 = Artifact.builder().name("TEST_ARTIFACT_NAME3").build();
 
-    private final VersionedArtifact versionedArtifact1v1 = VersionedArtifact.builder().name(artifact1.getName()).version("TEST_VERSION_1").build();
-    private final VersionedArtifact versionedArtifact1v2 = VersionedArtifact.builder().name(artifact1.getName()).version("TEST_VERSION_2").build();
-    private final VersionedArtifact versionedArtifact2v1 = VersionedArtifact.builder().name(artifact2.getName()).version("TEST_VERSION_1").build();
-    private final VersionedArtifact versionedArtifact3v1 = VersionedArtifact.builder().name(artifact3.getName()).version("TEST_VERSION_1").build();
+    private final VersionedArtifact versionedArtifact1v1 = VersionedArtifact.builder()
+            .name(artifact1.getName())
+            .version("TEST_VERSION_1")
+            .createdAt(Timestamp.from(Instant.now()))
+            .build();
+    private final VersionedArtifact versionedArtifact1v2 = VersionedArtifact.builder()
+            .name(artifact1.getName())
+            .version("TEST_VERSION_2")
+            .createdAt(Timestamp.from(Instant.now()))
+            .build();
+    private final VersionedArtifact versionedArtifact2v1 = VersionedArtifact.builder()
+            .name(artifact2.getName())
+            .version("TEST_VERSION_1")
+            .createdAt(Timestamp.from(Instant.now()))
+            .build();
+    private final VersionedArtifact versionedArtifact3v1 = VersionedArtifact.builder()
+            .name(artifact3.getName())
+            .version("TEST_VERSION_1")
+            .createdAt(Timestamp.from(Instant.now()))
+            .build();
 
     private final Environment environment1 = Environment.builder().name("TEST_ENVIRONMENT1_NAME").build();
     private final Environment environment2 = Environment.builder().name("TEST_ENVIRONMENT2_NAME").build();
@@ -44,7 +63,8 @@ public class ApplicationRepositoryImplTest {
 
     @Test
     public void shouldWork2() {
-        jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact1.getName());
+        applicationRepository.insertArtifact(artifact1);
+
         val artifacts = applicationRepository.getArtifacts();
 
         assertThat(artifacts).hasSize(1);
@@ -52,9 +72,9 @@ public class ApplicationRepositoryImplTest {
 
     @Test
     public void shouldWork3() {
-        jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact1.getName());
-        jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact2.getName());
-        jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact3.getName());
+        applicationRepository.insertArtifact(artifact1);
+        applicationRepository.insertArtifact(artifact2);
+        applicationRepository.insertArtifact(artifact3);
 
         val artifacts = applicationRepository.getArtifacts();
         assertThat(artifacts).hasSize(3);
@@ -68,12 +88,10 @@ public class ApplicationRepositoryImplTest {
 
     @Test
     public void shouldWork5() {
-        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment1.getName());
-        jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact1.getName());
-        jdbcTemplate.update("INSERT INTO versioned_artifacts(artifact_name, artifact_version) VALUES(?, ?)",
-                versionedArtifact1v1.getName(), versionedArtifact1v1.getVersion());
-        jdbcTemplate.update("INSERT INTO deployments(environment_name, artifact_name, artifact_version) VALUES(?, ?, ?)",
-                environment1.getName(), versionedArtifact1v1.getName(), versionedArtifact1v1.getVersion());
+        applicationRepository.insertEnvironment(environment1);
+        applicationRepository.insertArtifact(artifact1);
+        applicationRepository.insertVersionedArtifact(versionedArtifact1v1);
+        applicationRepository.insertDeployment(environment1, versionedArtifact1v1);
 
         val deployments = applicationRepository.getDeploymentsByEnvironmentAndArtifact(environment1, artifact1);
         assertThat(deployments).hasSize(1);
@@ -81,34 +99,26 @@ public class ApplicationRepositoryImplTest {
 
     @Test
     public void shouldWork6() {
-        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment1.getName());
-        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment2.getName());
-        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment3.getName());
-        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment4.getName());
+        applicationRepository.insertEnvironment(environment1);
+        applicationRepository.insertEnvironment(environment2);
+        applicationRepository.insertEnvironment(environment3);
+        applicationRepository.insertEnvironment(environment4);
 
-        jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact1.getName());
-        jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact2.getName());
-        jdbcTemplate.update("INSERT INTO artifacts(name) VALUES(?)", artifact3.getName());
+        applicationRepository.insertArtifact(artifact1);
+        applicationRepository.insertArtifact(artifact2);
+        applicationRepository.insertArtifact(artifact3);
 
-        jdbcTemplate.update("INSERT INTO versioned_artifacts(artifact_name, artifact_version) VALUES(?, ?)",
-                versionedArtifact1v1.getName(), versionedArtifact1v1.getVersion());
-        jdbcTemplate.update("INSERT INTO versioned_artifacts(artifact_name, artifact_version) VALUES(?, ?)",
-                versionedArtifact1v2.getName(), versionedArtifact1v2.getVersion());
-        jdbcTemplate.update("INSERT INTO versioned_artifacts(artifact_name, artifact_version) VALUES(?, ?)",
-                versionedArtifact2v1.getName(), versionedArtifact2v1.getVersion());
-        jdbcTemplate.update("INSERT INTO versioned_artifacts(artifact_name, artifact_version) VALUES(?, ?)",
-                versionedArtifact3v1.getName(), versionedArtifact3v1.getVersion());
+        applicationRepository.insertVersionedArtifact(versionedArtifact1v1);
+        applicationRepository.insertVersionedArtifact(versionedArtifact1v2);
+        applicationRepository.insertVersionedArtifact(versionedArtifact2v1);
+        applicationRepository.insertVersionedArtifact(versionedArtifact3v1);
 
-        jdbcTemplate.update("INSERT INTO deployments(environment_name, artifact_name, artifact_version) VALUES(?, ?, ?)",
-                environment1.getName(), versionedArtifact1v1.getName(), versionedArtifact1v1.getVersion());
-        jdbcTemplate.update("INSERT INTO deployments(environment_name, artifact_name, artifact_version) VALUES(?, ?, ?)",
-                environment1.getName(), versionedArtifact1v1.getName(), versionedArtifact1v1.getVersion());
-        jdbcTemplate.update("INSERT INTO deployments(environment_name, artifact_name, artifact_version) VALUES(?, ?, ?)",
-                environment1.getName(), versionedArtifact1v2.getName(), versionedArtifact1v2.getVersion());
-        jdbcTemplate.update("INSERT INTO deployments(environment_name, artifact_name, artifact_version) VALUES(?, ?, ?)",
-                environment1.getName(), versionedArtifact2v1.getName(), versionedArtifact2v1.getVersion());
-        jdbcTemplate.update("INSERT INTO deployments(environment_name, artifact_name, artifact_version) VALUES(?, ?, ?)",
-                environment1.getName(), versionedArtifact3v1.getName(), versionedArtifact3v1.getVersion());
+        applicationRepository.insertDeployment(environment1, versionedArtifact1v1);
+        applicationRepository.insertDeployment(environment1, versionedArtifact1v1); // test retry deploy same version
+        applicationRepository.insertDeployment(environment1, versionedArtifact1v2);
+        applicationRepository.insertDeployment(environment2, versionedArtifact2v1);
+        applicationRepository.insertDeployment(environment3, versionedArtifact3v1);
+
 
         val deployments = applicationRepository.getDeploymentsByEnvironmentAndArtifact(environment1, artifact1);
         assertThat(deployments).hasSize(3);
@@ -122,7 +132,7 @@ public class ApplicationRepositoryImplTest {
 
     @Test
     public void shouldWork8() {
-        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment1.getName());
+        applicationRepository.insertEnvironment(environment1);
 
         val environments = applicationRepository.getEnvironments();
         assertThat(environments).hasSize(1);
@@ -130,10 +140,10 @@ public class ApplicationRepositoryImplTest {
 
     @Test
     public void shouldWork9() {
-        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment1.getName());
-        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment2.getName());
-        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment3.getName());
-        jdbcTemplate.update("INSERT INTO environments(name) VALUES(?)", environment4.getName());
+        applicationRepository.insertEnvironment(environment1);
+        applicationRepository.insertEnvironment(environment2);
+        applicationRepository.insertEnvironment(environment3);
+        applicationRepository.insertEnvironment(environment4);
 
         val environments = applicationRepository.getEnvironments();
         assertThat(environments).hasSize(4);
