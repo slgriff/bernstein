@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,26 +27,14 @@ public class ApplicationRepositoryImplTest {
     private final Artifact artifact2 = Artifact.builder().name("TEST_ARTIFACT_NAME2").build();
     private final Artifact artifact3 = Artifact.builder().name("TEST_ARTIFACT_NAME3").build();
 
-    private final VersionedArtifact versionedArtifact1v1 = VersionedArtifact.builder()
-            .name(artifact1.getName())
-            .version("TEST_VERSION_1")
-            .createdAt(Timestamp.from(Instant.now()))
-            .build();
-    private final VersionedArtifact versionedArtifact1v2 = VersionedArtifact.builder()
-            .name(artifact1.getName())
-            .version("TEST_VERSION_2")
-            .createdAt(Timestamp.from(Instant.now()))
-            .build();
-    private final VersionedArtifact versionedArtifact2v1 = VersionedArtifact.builder()
-            .name(artifact2.getName())
-            .version("TEST_VERSION_1")
-            .createdAt(Timestamp.from(Instant.now()))
-            .build();
-    private final VersionedArtifact versionedArtifact3v1 = VersionedArtifact.builder()
-            .name(artifact3.getName())
-            .version("TEST_VERSION_1")
-            .createdAt(Timestamp.from(Instant.now()))
-            .build();
+    private final VersionedArtifact versionedArtifact1v1 = VersionedArtifact.builder().name(artifact1.getName())
+            .version("TEST_VERSION_1").createdAt(Timestamp.from(Instant.now())).build();
+    private final VersionedArtifact versionedArtifact1v2 = VersionedArtifact.builder().name(artifact1.getName())
+            .version("TEST_VERSION_2").createdAt(Timestamp.from(Instant.now())).build();
+    private final VersionedArtifact versionedArtifact2v1 = VersionedArtifact.builder().name(artifact2.getName())
+            .version("TEST_VERSION_1").createdAt(Timestamp.from(Instant.now())).build();
+    private final VersionedArtifact versionedArtifact3v1 = VersionedArtifact.builder().name(artifact3.getName())
+            .version("TEST_VERSION_1").createdAt(Timestamp.from(Instant.now())).build();
 
     private final Environment environment1 = Environment.builder().name("TEST_ENVIRONMENT1_NAME").build();
     private final Environment environment2 = Environment.builder().name("TEST_ENVIRONMENT2_NAME").build();
@@ -70,7 +59,7 @@ public class ApplicationRepositoryImplTest {
 
         val artifacts = applicationRepository.getArtifacts();
 
-        assertThat(artifacts).hasSize(1);
+        assertThat(artifacts).isEqualTo(List.of(artifact1));
     }
 
     @Test
@@ -80,7 +69,7 @@ public class ApplicationRepositoryImplTest {
         applicationRepository.insertArtifact(artifact3);
 
         val artifacts = applicationRepository.getArtifacts();
-        assertThat(artifacts).hasSize(3);
+        assertThat(artifacts).isEqualTo(List.of(artifact1, artifact2, artifact3));
     }
 
     @Test
@@ -122,7 +111,6 @@ public class ApplicationRepositoryImplTest {
         applicationRepository.insertDeployment(environment2, versionedArtifact2v1);
         applicationRepository.insertDeployment(environment3, versionedArtifact3v1);
 
-
         val deployments = applicationRepository.getDeploymentsByEnvironmentAndArtifact(environment1, artifact1);
         assertThat(deployments).hasSize(3);
     }
@@ -138,7 +126,7 @@ public class ApplicationRepositoryImplTest {
         applicationRepository.insertEnvironment(environment1);
 
         val environments = applicationRepository.getEnvironments();
-        assertThat(environments).hasSize(1);
+        assertThat(environments).isEqualTo(List.of(environment1));
     }
 
     @Test
@@ -149,6 +137,6 @@ public class ApplicationRepositoryImplTest {
         applicationRepository.insertEnvironment(environment4);
 
         val environments = applicationRepository.getEnvironments();
-        assertThat(environments).hasSize(4);
+        assertThat(environments).isEqualTo(List.of(environment1, environment2, environment3, environment4));
     }
 }

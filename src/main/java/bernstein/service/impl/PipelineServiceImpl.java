@@ -15,11 +15,7 @@ public class PipelineServiceImpl implements PipelineService {
 
     @Override
     public Pipeline getPipeline() {
-        Pipeline pipeline = new Pipeline(
-                List.of(new Phase(
-                        List.of(new EchoStep())
-                ))
-        );
+        Pipeline pipeline = new Pipeline(List.of(new Phase(List.of(new EchoStep()))));
         return pipeline;
     }
 }

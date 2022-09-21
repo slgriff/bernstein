@@ -8,9 +8,12 @@ import java.sql.Timestamp;
 
 @Data
 public class VersionedArtifact {
-    @NonNull private String name;
-    @NonNull private String version;
-    @NonNull private Timestamp createdAt;
+    @NonNull
+    private String name;
+    @NonNull
+    private String version;
+    @NonNull
+    private Timestamp createdAt;
 
     @Builder
     public VersionedArtifact(@NonNull String name, @NonNull String version, @NonNull Timestamp createdAt) {

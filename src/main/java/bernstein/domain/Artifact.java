@@ -6,7 +6,8 @@ import lombok.NonNull;
 
 @Data
 public class Artifact {
-    @NonNull private String name;
+    @NonNull
+    private String name;
 
     @Builder
     public Artifact(@NonNull String name) {

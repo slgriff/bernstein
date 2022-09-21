@@ -9,10 +9,13 @@ import lombok.NonNull;
 import java.util.List;
 
 public interface ApplicationRepository {
-    void insertArtifact(Artifact artifact);
-    void insertEnvironment(Environment environment);
-    void insertVersionedArtifact(VersionedArtifact versionedArtifact);
-    void insertDeployment(Environment environment, VersionedArtifact versionedArtifact);
+    void insertArtifact(@NonNull Artifact artifact);
+
+    void insertEnvironment(@NonNull Environment environment);
+
+    void insertVersionedArtifact(@NonNull VersionedArtifact versionedArtifact);
+
+    void insertDeployment(@NonNull Environment environment, @NonNull VersionedArtifact versionedArtifact);
 
     @NonNull
     List<Artifact> getArtifacts();
@@ -32,7 +35,8 @@ public interface ApplicationRepository {
     List<Deployment> getDeploymentsByArtifact(@NonNull Artifact artifact);
 
     @NonNull
-    List<Deployment> getDeploymentsByEnvironmentAndArtifact(@NonNull Environment environment, @NonNull Artifact artifact);
+    List<Deployment> getDeploymentsByEnvironmentAndArtifact(@NonNull Environment environment,
+            @NonNull Artifact artifact);
 
     @NonNull
     List<VersionedArtifact> getVersionedArtifacts();

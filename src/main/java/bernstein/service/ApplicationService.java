@@ -13,7 +13,7 @@ public interface ApplicationService {
     List<Artifact> getArtifacts();
 
     @NonNull
-    List<Artifact> getArtifactsByEnvironment(Environment environment);
+    List<Artifact> getArtifactsByEnvironment(@NonNull Environment environment);
 
     @NonNull
     List<Environment> getEnvironments();
@@ -28,7 +28,8 @@ public interface ApplicationService {
     List<Deployment> getDeploymentsByEnvironment(@NonNull Environment environment);
 
     @NonNull
-    List<Deployment> getDeploymentsByEnvironmentAndArtifact(@NonNull Environment environment, @NonNull Artifact artifact);
+    List<Deployment> getDeploymentsByEnvironmentAndArtifact(@NonNull Environment environment,
+            @NonNull Artifact artifact);
 
     @NonNull
     Deployment getDeploymentById(int id);

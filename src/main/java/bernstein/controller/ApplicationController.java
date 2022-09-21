@@ -35,7 +35,8 @@ public class ApplicationController {
     }
 
     @GetMapping("/artifact/{artifact}")
-    public String getArtifact(@PathVariable String artifact, @RequestParam(required = false) String environment, Model model) {
+    public String getArtifact(@PathVariable String artifact, @RequestParam(required = false) String environment,
+            Model model) {
         Artifact oArtifact = new Artifact(artifact);
         if (environment == null || environment.isBlank()) {
             model.addAttribute("", "");
@@ -46,14 +47,16 @@ public class ApplicationController {
     }
 
     @GetMapping("/deployments")
-    public String getDeployments(@RequestParam(required = false) String environment, @RequestParam(required = false) String artifact, Model model) {
+    public String getDeployments(@RequestParam(required = false) String environment,
+            @RequestParam(required = false) String artifact, Model model) {
         List<Deployment> deployments;
 
         boolean specificEnvironment = environment != null && !environment.isBlank();
         boolean specificArtifact = artifact != null && !artifact.isBlank();
 
         if (specificEnvironment && specificArtifact) {
-            deployments = applicationService.getDeploymentsByEnvironmentAndArtifact(new Environment(environment), new Artifact(artifact));
+            deployments = applicationService.getDeploymentsByEnvironmentAndArtifact(new Environment(environment),
+                    new Artifact(artifact));
         } else if (specificEnvironment) {
             deployments = applicationService.getDeploymentsByEnvironment(new Environment(environment));
         } else if (specificArtifact) {
@@ -88,7 +91,8 @@ public class ApplicationController {
     }
 
     @GetMapping("/environment/{environment}")
-    public String getEnvironment(@PathVariable String environment, @RequestParam(required = false) String artifact, Model model) {
+    public String getEnvironment(@PathVariable String environment, @RequestParam(required = false) String artifact,
+            Model model) {
         Environment oEnvironment = new Environment(environment);
 
         List<Deployment> deployments;

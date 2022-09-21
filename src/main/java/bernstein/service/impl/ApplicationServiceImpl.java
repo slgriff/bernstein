@@ -5,6 +5,7 @@ import bernstein.domain.Deployment;
 import bernstein.domain.Environment;
 import bernstein.repository.ApplicationRepository;
 import bernstein.service.ApplicationService;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,42 +21,51 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    @NonNull
     public List<Artifact> getArtifacts() {
         return applicationRepository.getArtifacts();
     }
 
     @Override
-    public List<Artifact> getArtifactsByEnvironment(Environment environment) {
+    @NonNull
+    public List<Artifact> getArtifactsByEnvironment(@NonNull Environment environment) {
         return applicationRepository.getArtifacts();
     }
 
     @Override
+    @NonNull
     public List<Environment> getEnvironments() {
         return applicationRepository.getEnvironments();
     }
 
     @Override
+    @NonNull
     public List<Deployment> getDeployments() {
         return applicationRepository.getDeployments();
     }
 
     @Override
-    public List<Deployment> getDeploymentsByArtifact(Artifact artifact) {
+    @NonNull
+    public List<Deployment> getDeploymentsByArtifact(@NonNull Artifact artifact) {
         return applicationRepository.getDeploymentsByArtifact(artifact);
     }
 
     @Override
-    public List<Deployment> getDeploymentsByEnvironment(Environment environment) {
+    @NonNull
+    public List<Deployment> getDeploymentsByEnvironment(@NonNull Environment environment) {
         return applicationRepository.getDeploymentsByEnvironment(environment);
     }
 
     @Override
-    public List<Deployment> getDeploymentsByEnvironmentAndArtifact(Environment environment, Artifact artifact) {
+    @NonNull
+    public List<Deployment> getDeploymentsByEnvironmentAndArtifact(@NonNull Environment environment,
+            @NonNull Artifact artifact) {
         return applicationRepository.getDeploymentsByEnvironmentAndArtifact(environment, artifact);
     }
 
     @Override
+    @NonNull
     public Deployment getDeploymentById(int id) {
-        return null;
+        return applicationRepository.getDeploymentById(id);
     }
 }

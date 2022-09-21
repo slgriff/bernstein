@@ -9,19 +9,19 @@ import java.sql.Timestamp;
 @Data
 public class Deployment {
     private int id;
-    @NonNull private Environment environment;
-    @NonNull private VersionedArtifact versionedArtifact;
-    @NonNull private Status status;
-    @NonNull private Timestamp createdAt;
+    @NonNull
+    private Environment environment;
+    @NonNull
+    private VersionedArtifact versionedArtifact;
+    @NonNull
+    private Status status;
+    @NonNull
+    private Timestamp createdAt;
     private Timestamp finishedAt;
 
     @Builder
-    public Deployment(int id,
-                      @NonNull Environment environment,
-                      @NonNull VersionedArtifact versionedArtifact,
-                      @NonNull Status status,
-                      @NonNull Timestamp createdAt,
-                      Timestamp finishedAt) {
+    public Deployment(int id, @NonNull Environment environment, @NonNull VersionedArtifact versionedArtifact,
+            @NonNull Status status, @NonNull Timestamp createdAt, Timestamp finishedAt) {
         this.id = id;
         this.environment = environment;
         this.versionedArtifact = versionedArtifact;
@@ -31,9 +31,6 @@ public class Deployment {
     }
 
     public enum Status {
-        SUCCESS,
-        FAILURE,
-        IN_PROGRESS,
-        CANCELLED
+        SUCCESS, FAILURE, IN_PROGRESS, CANCELLED
     }
 }
