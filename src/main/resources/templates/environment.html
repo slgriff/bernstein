@@ -8,12 +8,8 @@
 <body>
     <table>
         <tr>
-            <th>Name</th>
+            <th th:text="${environment.name}">Name</th>
         </tr>
-        <tr th:each="environment : ${environments}">
-            <td th:text="${environment.name}"></td>
-        </tr>
-
     </table>
 </body>
 </html>

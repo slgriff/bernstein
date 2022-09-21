@@ -4,6 +4,7 @@ import bernstein.domain.Artifact;
 import bernstein.domain.Deployment;
 import bernstein.domain.Environment;
 import bernstein.domain.VersionedArtifact;
+import lombok.NonNull;
 
 import java.util.List;
 
@@ -13,16 +14,31 @@ public interface ApplicationRepository {
     void insertVersionedArtifact(VersionedArtifact versionedArtifact);
     void insertDeployment(Environment environment, VersionedArtifact versionedArtifact);
 
+    @NonNull
     List<Artifact> getArtifacts();
+
+    @NonNull
     List<Environment> getEnvironments();
 
+    @NonNull
     List<Deployment> getDeployments();
-    List<Deployment> getDeploymentsByEnvironment(Environment environment);
-    List<Deployment> getDeploymentsByArtifact(Artifact artifact);
-    List<Deployment> getDeploymentsByEnvironmentAndArtifact(Environment environment, Artifact artifact);
 
+    Deployment getDeploymentById(int id);
 
+    @NonNull
+    List<Deployment> getDeploymentsByEnvironment(@NonNull Environment environment);
+
+    @NonNull
+    List<Deployment> getDeploymentsByArtifact(@NonNull Artifact artifact);
+
+    @NonNull
+    List<Deployment> getDeploymentsByEnvironmentAndArtifact(@NonNull Environment environment, @NonNull Artifact artifact);
+
+    @NonNull
     List<VersionedArtifact> getVersionedArtifacts();
-    List<VersionedArtifact> getVersionedArtifactsByName(String name);
-    VersionedArtifact getVersionedArtifactByNameAndVersion(String name, String version);
+
+    @NonNull
+    List<VersionedArtifact> getVersionedArtifactsByName(@NonNull String name);
+
+    VersionedArtifact getVersionedArtifactByNameAndVersion(@NonNull String name, @NonNull String version);
 }

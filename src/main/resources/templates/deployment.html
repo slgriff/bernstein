@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Deployment</title>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
+</head>
+<body>
+    <a th:href="@{/}">Home</a>
+    <a th:href="@{/}">Console Output</a>
+
+    <table>
+        <tr>
+            <td th:text="${deployment.environment.name}"></td>
+        </tr>
+        <tr>
+            <td th:text="${deployment.versionedArtifact.name}"></td>
+        </tr>
+        <tr>
+            <td th:text="${deployment.versionedArtifact.version}"></td>
+        </tr>
+        <tr>
+            <td th:text="${deployment.status}"></td>
+        </tr>
+        <tr>
+            <td th:text="${deployment.createdAt}"></td>
+        </tr>
+        <tr>
+            <td th:text="${deployment.finishedAt}"></td>
+        </tr>
+    </table>
+
+    <th:block th:with="versionedArtifact=${deployment.versionedArtifact}">
+        <form action="#" th:action="@{/promote}" th:object="${versionedArtifact}">
+            <select th:field="*{environment}">
+                <option th:each="environment : ${environments}"
+                        th:value="${environment}"
+                        th:text="${environment}"></option>
+            </select>
+        </form>
+    </th:block>
+</body>
+</html>

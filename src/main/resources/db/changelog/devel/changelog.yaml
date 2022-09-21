@@ -96,13 +96,19 @@ databaseChangeLog:
             tableName: users
             columns:
               - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: RANDOM_UUID()
+                  constraints:
+                    nullable: false
+              - column:
                   name: username
-                  type: varchar_ignorecase
+                  type: varchar
                   constraints:
                     primaryKey: true
               - column:
                   name: password
-                  type: varchar_ignorecase
+                  type: varchar
                   constraints:
                     nullable: false
               - column:

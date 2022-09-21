@@ -5,17 +5,18 @@ import lombok.Data;
 import lombok.NonNull;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Data
 public class User {
-    private int id;
+    @NonNull private UUID id;
     @NonNull private String username;
     @NonNull private String password;
     private boolean enabled;
     @NonNull private Timestamp createdAt;
 
     @Builder
-    public User(int id,
+    public User(@NonNull UUID id,
                 @NonNull String username,
                 @NonNull String password,
                 boolean enabled,
