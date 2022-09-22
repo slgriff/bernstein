@@ -3,7 +3,9 @@ package bernstein.controller;
 import bernstein.domain.Artifact;
 import bernstein.domain.Deployment;
 import bernstein.domain.Environment;
+import bernstein.pipeline.Pipeline;
 import bernstein.service.ApplicationService;
+import bernstein.service.PipelineService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +21,11 @@ import java.util.List;
 public class ApplicationController {
     private final ApplicationService applicationService;
 
-    public ApplicationController(ApplicationService applicationService) {
+    private final PipelineService pipelineService;
+
+    public ApplicationController(ApplicationService applicationService, PipelineService pipelineService) {
         this.applicationService = applicationService;
+        this.pipelineService = pipelineService;
     }
 
     @GetMapping("/artifacts")
@@ -49,24 +54,27 @@ public class ApplicationController {
     @GetMapping("/deployments")
     public String getDeployments(@RequestParam(required = false) String environment,
             @RequestParam(required = false) String artifact, Model model) {
-        List<Deployment> deployments;
+        /*
+         * List<Deployment> deployments;
+         *
+         * boolean specificEnvironment = environment != null && !environment.isBlank(); boolean specificArtifact =
+         * artifact != null && !artifact.isBlank();
+         *
+         * if (specificEnvironment && specificArtifact) { deployments =
+         * applicationService.getDeploymentsByEnvironmentAndArtifact(new Environment(environment), new
+         * Artifact(artifact)); } else if (specificEnvironment) { deployments =
+         * applicationService.getDeploymentsByEnvironment(new Environment(environment)); } else if (specificArtifact) {
+         * deployments = applicationService.getDeploymentsByArtifact(new Artifact(artifact)); } else { deployments =
+         * applicationService.getDeployments(); }
+         *
+         * model.addAttribute("deployments", deployments);
+         *
+         */
 
-        boolean specificEnvironment = environment != null && !environment.isBlank();
-        boolean specificArtifact = artifact != null && !artifact.isBlank();
+        Pipeline pipeline = pipelineService.getPipeline();
+        pipelineService.runPipeline(pipeline);
 
-        if (specificEnvironment && specificArtifact) {
-            deployments = applicationService.getDeploymentsByEnvironmentAndArtifact(new Environment(environment),
-                    new Artifact(artifact));
-        } else if (specificEnvironment) {
-            deployments = applicationService.getDeploymentsByEnvironment(new Environment(environment));
-        } else if (specificArtifact) {
-            deployments = applicationService.getDeploymentsByArtifact(new Artifact(artifact));
-        } else {
-            deployments = applicationService.getDeployments();
-        }
-
-        model.addAttribute("deployments", deployments);
-
+        model.addAttribute("deployments", List.of());
         return "deployments";
     }
 

@@ -1,6 +1,7 @@
 package bernstein.controller;
 
 import bernstein.service.ApplicationService;
+import bernstein.service.PipelineService;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.junit.Test;
@@ -22,6 +23,9 @@ public class ApplicationControllerTest {
 
     @MockBean
     private ApplicationService applicationService;
+
+    @MockBean
+    private PipelineService pipelineService;
 
     @Test
     public void shouldWork1() throws Exception {
