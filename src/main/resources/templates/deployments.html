@@ -1,20 +1,70 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Deployments</title>
-    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
-</head>
-<body>
-    <table>
-        <tr>
-            <th>Name</th>
-        </tr>
-        <tr th:each="environment : ${environments}">
-            <td><a th:href="@{/environment/{environmentName}(environmentName=${environment.name})}" th:text="${environment.name}"></a> </td>
-        </tr>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title th:text="#{deployments}"></title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    </head>
 
-    </table>
-</body>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">Deployments</li>
+        </ol>
+    </nav>
+
+    <body>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th th:text="#{deployment.id}"></th>
+                    <th th:text="#{artifact.name}"></th>
+                    <th th:text="#{artifact.version}"></th>
+                    <th th:text="#{environment}"></th>
+                    <th th:text="#{status}"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="deployment : ${deployments}">
+                    <td th:text="${deployment.id}"></td>
+                    <td th:text="${deployment.versionedArtifact.name}"></td>
+                    <td th:text="${deployment.versionedArtifact.version}"></td>
+                    <td th:text="${deployment.environment.name}"></td>
+                    <td th:text="${deployment.status}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <nav>
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" th:text="#{first}"></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" th:text="#{previous}"></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" th:text="#{next}"></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" th:text="#{last}"></a>
+                </li>
+            </ul>
+        </nav>
+
+        <form action="#">
+            <div class="input-group">
+                <label class="input-group-text" th:text="#{artifact.name}"></label>
+                <select class="form-select">
+                    <option>test1</option>
+                    <option>test2</option>
+                    <option>test3</option>
+                </select>
+                <button class="btn btn-outline-primary" type="button" th:text="#{deploy}"></button>
+            </div>
+        </form>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+        <script src="http://localhost:35729/livereload.js"></script>
+    </body>
 </html>

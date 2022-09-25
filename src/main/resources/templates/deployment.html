@@ -31,14 +31,8 @@
         </tr>
     </table>
 
-    <th:block th:with="versionedArtifact=${deployment.versionedArtifact}">
-        <form action="#" th:action="@{/promote}" th:object="${versionedArtifact}">
-            <select th:field="*{environment}">
-                <option th:each="environment : ${environments}"
-                        th:value="${environment}"
-                        th:text="${environment}"></option>
-            </select>
-        </form>
-    </th:block>
+    <form action="#" th:action="@{/promote}" th:object="${deployment}">
+        <button id="promote" name="promote" type="button">Promote</button>
+    </form>
 </body>
 </html>

@@ -3,9 +3,13 @@ package bernstein.service;
 import bernstein.domain.Artifact;
 import bernstein.domain.Deployment;
 import bernstein.domain.Environment;
+import bernstein.domain.VersionedArtifact;
+import bernstein.pipeline.Pipeline;
 import lombok.NonNull;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 public interface ApplicationService {
 
@@ -33,4 +37,15 @@ public interface ApplicationService {
 
     @NonNull
     Deployment getDeploymentById(int id);
+
+    void promoteDeployment(@NonNull Deployment deployment);
+
+    @NonNull
+    Pipeline getPipeline();
+
+    @Async
+    @NonNull
+    Future<Integer> runPipeline(Pipeline pipeline);
+
+    void deploy(@NonNull VersionedArtifact versionedArtifact, @NonNull Environment environment);
 }
