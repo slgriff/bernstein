@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="deployment : ${deployments}">
+                <tr th:each="deployment : ${allDeployments}">
                     <td th:text="${deployment.id}"></td>
                     <td th:text="${deployment.versionedArtifact.name}"></td>
                     <td th:text="${deployment.versionedArtifact.version}"></td>
@@ -54,11 +54,11 @@
 
         <form action="#">
             <div class="input-group">
-                <label class="input-group-text" th:text="#{artifact.name}"></label>
-                <select class="form-select">
-                    <option>test1</option>
-                    <option>test2</option>
-                    <option>test3</option>
+                <label for="artifactSelect" class="input-group-text" th:text="#{artifact.name}"></label>
+                <select id="artifactSelect" name="artifact" class="form-select">
+                    <option th:each="artifact : ${allArtifacts}"
+                            th:value="${artifact}"
+                            th:text="${artifact.name}"></option>
                 </select>
                 <button class="btn btn-outline-primary" type="button" th:text="#{deploy}"></button>
             </div>

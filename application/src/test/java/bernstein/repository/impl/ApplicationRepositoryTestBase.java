@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @RunWith(SpringRunner.class)
-public class ApplicationRepositoryImplTest {
+public class ApplicationRepositoryTestBase {
     private final Artifact artifact1 = Artifact.builder().name("TEST_ARTIFACT_NAME1").build();
     private final Artifact artifact2 = Artifact.builder().name("TEST_ARTIFACT_NAME2").build();
     private final Artifact artifact3 = Artifact.builder().name("TEST_ARTIFACT_NAME3").build();
@@ -43,9 +42,6 @@ public class ApplicationRepositoryImplTest {
 
     @Autowired
     private ApplicationRepository applicationRepository;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     @Test
     public void shouldWork1() {
