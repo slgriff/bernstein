@@ -45,7 +45,7 @@ public interface ApplicationService {
 
     @Async
     @NonNull
-    Future<Integer> runPipeline(Pipeline pipeline);
+    Future<Boolean> runPipeline(Pipeline pipeline);
 
     void deploy(@NonNull VersionedArtifact versionedArtifact, @NonNull Environment environment);
 }

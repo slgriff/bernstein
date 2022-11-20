@@ -1,20 +1,27 @@
 package bernstein.controller;
 
-import bernstein.domain.Artifact;
+import bernstein.api.request.body.DeployRequestBody;
+import bernstein.api.request.body.PromoteRequestBody;
 import bernstein.domain.Deployment;
+import bernstein.pipeline.Phase;
+import bernstein.pipeline.Pipeline;
+import bernstein.pipeline.step.DownloadArtifactStep;
+import bernstein.pipeline.step.ShellStep;
 import bernstein.service.ApplicationService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
+import javax.validation.Valid;
+import java.net.URI;
 
-@Controller
+@RestController
 @Slf4j
 public class ApplicationController {
     private final ApplicationService applicationService;
@@ -23,39 +30,45 @@ public class ApplicationController {
         this.applicationService = applicationService;
     }
 
-    @GetMapping("/deployments")
-    public String getAllDeployments(Model model) {
-
-        List<Deployment> deployments = applicationService.getDeployments();
-        model.addAttribute("allDeployments", deployments);
-
-        List<Artifact> artifacts = applicationService.getArtifacts();
-        model.addAttribute("allArtifacts", artifacts);
-
-        return "deployments";
-    }
-
     @PostMapping("/deployments/promote")
-    public String promoteDeployment(@RequestParam Integer deploymentId) {
+    public ResponseEntity<String> promoteDeployment(@Valid @RequestBody PromoteRequestBody promoteRequestBody,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().build();
+        }
 
-        return "";
+        return ResponseEntity.accepted().build();
     }
 
     @PostMapping("/deployments/deploy")
-    public String deploy(@RequestBody DeployRequest deployRequest) {
+    public ResponseEntity<String> deploy(@Valid @RequestBody DeployRequestBody deployRequestBody,
+            BindingResult bindingResult) {
+        log.info("deploy={}", deployRequestBody);
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        String script = deployRequestBody.getDeployScript();
+
+        String downloadUrl = deployRequestBody.getDownloadUrl();
+
+        Pipeline pipeline = new Pipeline();
+
+        Phase phase = new Phase();
+        phase.addStep(new DownloadArtifactStep(downloadUrl));
+        phase.addStep(new ShellStep(script));
+        pipeline.addPhase(phase);
+
+        applicationService.runPipeline(pipeline);
+
+        return ResponseEntity
+                .created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id").buildAndExpand(1).toUri())
+                .build();
+    }
+
+    @GetMapping("/deployment/{id}/status")
+    public String getDeploymentStatus(@PathVariable("id") String id) {
 
         return "";
-    }
-
-    @GetMapping("/deployment/{id}")
-    public String getDeployment(@PathVariable Integer id, @RequestParam(required = false) Boolean promote,
-            Model model) {
-        Deployment deployment = applicationService.getDeploymentById(id);
-        model.addAttribute("deployment", deployment);
-        return "deployment";
-    }
-
-    static class DeployRequest {
-
     }
 }

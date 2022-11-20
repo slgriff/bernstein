@@ -1,5 +1,5 @@
 java=11.0.16.1-tem
 maven=3.8.6
-springboot=2.7.5
+springboot=2.7.4
 asciidoctorj=2.5.6
 

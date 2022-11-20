@@ -41,6 +41,11 @@ databaseChangeLog:
                   defaultValueComputed: LOCALTIMESTAMP
                   constraints:
                     nullable: false
+              - column:
+                  name: downloadUrl
+                  type: varchar(2000)
+                  constraints:
+                    nullable: false
         - addPrimaryKey:
             tableName: versioned_artifacts
             columnNames: artifact_name, artifact_version

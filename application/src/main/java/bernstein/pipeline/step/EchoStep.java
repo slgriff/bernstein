@@ -4,7 +4,7 @@ import bernstein.pipeline.Step;
 
 public class EchoStep implements Step {
     @Override
-    public int execute() {
-        return 0;
+    public boolean execute() {
+        return true;
     }
 }

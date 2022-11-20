@@ -10,8 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -32,9 +35,21 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     }
 
     @Override
-    public void insertDeployment(@NonNull Environment environment, @NonNull VersionedArtifact versionedArtifact) {
+    public int insertDeployment(@NonNull Environment environment, @NonNull VersionedArtifact versionedArtifact) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "INSERT INTO deployments(environment_name, artifact_name, artifact_version) VALUES(?, ?, ?)";
-        jdbcTemplate.update(sql, environment.getName(), versionedArtifact.getName(), versionedArtifact.getVersion());
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, environment.getName());
+            preparedStatement.setString(2, versionedArtifact.getName());
+            preparedStatement.setString(3, versionedArtifact.getVersion());
+            return preparedStatement;
+        }, keyHolder);
+
+        return (int) keyHolder.getKey();
+
+        // jdbcTemplate.update(sql, environment.getName(), versionedArtifact.getName(), versionedArtifact.getVersion());
     }
 
     @Override

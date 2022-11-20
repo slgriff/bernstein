@@ -15,7 +15,7 @@ public interface ApplicationRepository {
 
     void insertVersionedArtifact(@NonNull VersionedArtifact versionedArtifact);
 
-    void insertDeployment(@NonNull Environment environment, @NonNull VersionedArtifact versionedArtifact);
+    int insertDeployment(@NonNull Environment environment, @NonNull VersionedArtifact versionedArtifact);
 
     @NonNull
     List<Artifact> getArtifacts();

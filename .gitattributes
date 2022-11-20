@@ -1,0 +1,8 @@
+*.java text
+*.xml text
+*.adoc text
+*.md text
+.sdkmanrc text eol=lf
+*.yml text
+*.yaml text
+*.properties text

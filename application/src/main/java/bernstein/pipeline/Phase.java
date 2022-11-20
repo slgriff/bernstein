@@ -4,28 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Phase {
-    private List<Step> steps;
+    private final String name;
+
+    private final List<Step> steps;
 
     public Phase() {
-        steps = new ArrayList<>();
+        this.name = "";
+        this.steps = new ArrayList<>();
     }
 
     public Phase(List<Step> steps) {
-        steps = new ArrayList<>(steps);
+        this.name = "";
+        this.steps = new ArrayList<>(steps);
+    }
+
+    public Phase(String name, List<Step> steps) {
+        this.name = name;
+        this.steps = new ArrayList<>(steps);
     }
 
     public boolean addStep(Step step) {
         return steps.add(step);
     }
 
-    public int execute() {
+    public boolean execute() {
         for (Step step : steps) {
-            int retVal = step.execute();
-            if (retVal != 0) {
-                return retVal;
+            if (!step.execute()) {
+                return false;
             }
         }
 
-        return 0;
+        return true;
+    }
+
+    public String getName() {
+        return name;
     }
 }

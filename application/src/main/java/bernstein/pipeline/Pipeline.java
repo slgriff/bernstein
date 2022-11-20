@@ -4,28 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pipeline {
-    private List<Phase> phases;
+    private final List<Phase> phases;
 
     public Pipeline() {
-        phases = new ArrayList<>();
+        this.phases = new ArrayList<>();
     }
 
     public Pipeline(List<Phase> phases) {
-        phases = new ArrayList<>(phases);
+        this.phases = new ArrayList<>(phases);
     }
 
     public boolean addPhase(Phase phase) {
         return phases.add(phase);
     }
 
-    public int execute() {
+    public boolean execute() {
         for (Phase phase : phases) {
-            int retVal = phase.execute();
-            if (retVal != 0) {
-                return retVal;
+            if (!phase.execute()) {
+                return false;
             }
         }
 
-        return 0;
+        return true;
     }
 }
