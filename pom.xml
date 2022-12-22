@@ -23,9 +23,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <resource.delimiter>@</resource.delimiter>
         <maven.compiler.release>${java.version}</maven.compiler.release>
-        <spring-boot.version>2.7.5</spring-boot.version>
-        <testcontainers.version>1.17.3</testcontainers.version>
-        <springdoc-openapi.version>1.6.11</springdoc-openapi.version>
+        <spring-boot.version>2.7.7</spring-boot.version>
+        <testcontainers.version>1.17.6</testcontainers.version>
+        <springdoc-openapi.version>1.6.13</springdoc-openapi.version>
         <sonatype.nexus.version>3.41.1-01</sonatype.nexus.version>
         <docker-java.version>3.2.13</docker-java.version>
     </properties>
